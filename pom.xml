@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.1.5.RELEASE</spring.version>
-        <start-class>task.work.main.Main</start-class>
+        <start-class>task.main.Main</start-class>
     </properties>
 
     <build>
@@ -37,11 +37,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.3.160</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class TaskFile {
-
     public final static int numberOfStrings = 100000;
 
     public void createFile(int fileNumber) {
@@ -18,8 +17,7 @@ public class TaskFile {
                 file.write("\n");
             }
         } catch (IOException io) {
-            System.out.println("Cannot create file! Check the error message:");
-            System.out.println(io.getMessage());
+            io.printStackTrace();
         }
     }
 }

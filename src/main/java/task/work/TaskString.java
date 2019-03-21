@@ -20,10 +20,6 @@ public class TaskString {
     private double realNumber;
     private String outputString;
 
-    public Date getDate() {
-        return date;
-    }
-
     public java.sql.Date getSQLDate() {
         return new java.sql.Date(date.getTime());
     }
@@ -79,7 +75,7 @@ public class TaskString {
 
     private void setLatinString() {
         var stringLength = 10;
-        StringBuilder outputString = new StringBuilder(stringLength);
+        var outputString = new StringBuilder(stringLength);
 
         while (stringLength-- > 0) {
             outputString.append(Utils.getLatinSymbol());
@@ -90,7 +86,7 @@ public class TaskString {
 
     private void setRussianString() {
         var stringLength = 10;
-        StringBuilder outputString = new StringBuilder(stringLength);
+        var outputString = new StringBuilder(stringLength);
 
         while (stringLength-- > 0) {
             outputString.append(Utils.getRussianSymbol());
@@ -113,7 +109,7 @@ public class TaskString {
     }
 
     private void setDoubleNumber() {
-        StringBuilder number = new StringBuilder();
+        var number = new StringBuilder();
         var leftLimit = 1;
         var rightLimit = 20;
         var max = rightLimit - leftLimit;
@@ -138,7 +134,7 @@ public class TaskString {
         setIntNumber();
         setDoubleNumber();
 
-        StringBuilder tmp = new StringBuilder();
+        var tmp = new StringBuilder();
         var formatForDate = new SimpleDateFormat("dd.MM.yyyy");
         tmp.append(formatForDate.format(this.date))
                 .append(separator)
@@ -156,7 +152,6 @@ public class TaskString {
 
     public String getFullString() {
         setOutputString();
-
         return this.outputString;
     }
 

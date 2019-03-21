@@ -5,7 +5,16 @@ import task.work.TaskString;
 
 import javax.sql.DataSource;
 
-public class TaskStringDB implements ITaskStringDB {
+public class TaskStringDB {
+    public static final String SQL_INSERT =
+            "insert into " + TaskString.TABLE_NAME + " (" +
+                    TaskString.DATE_COLUMN + ", " +
+                    TaskString.LATIN_STRING_COLUMN + ", " +
+                    TaskString.RUSSIAN_STRING_COLUMN + ", " +
+                    TaskString.INTEGER_NUMBER_COLUMN + ", " +
+                    TaskString.REAL_NUMBER_COLUMN +
+                    ") values (?, ?, ?, ?, ?)";
+
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplateObject;
 

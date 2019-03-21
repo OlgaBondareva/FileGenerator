@@ -1,4 +1,4 @@
-package task.work.main;
+package task.main;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -13,25 +13,18 @@ import java.util.Scanner;
 
 public class Main {
     private static int numberOfFiles = 100;
-    private static String filesFolderPath = Utils.getFilesFolder();
+    private static String filesFolderPathWithSeparator = Utils.getFilesFolder() + File.separator;
+    private static String fileExtension = ".txt";
+    private static String fullFileName = "combined.txt";
 
     private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Beans.xml");
     private static TaskStringDB taskStringDB = (TaskStringDB) applicationContext.getBean("taskStringDB");
 
     public static void main(String[] args) {
-        System.out.println("Program operations:");
-        System.out.println("1. Create 100 files");
-        System.out.println("2. Combine all files into 1");
-        System.out.println("3. Import to database management system");
-        System.out.println("0. Exit");
-
-        Scanner scanner = new Scanner(System.in);
-
         while (true) {
+            printMenu();
             System.out.print("\nEnter the number of your operation: ");
-            var userCase = scanner.nextInt();
-
-            switch (userCase) {
+            switch (new Scanner(System.in).nextInt()) {
                 case 1:
                     createFiles();
                     break;
@@ -44,7 +37,7 @@ public class Main {
                 case 0:
                     return;
                 default:
-                    System.out.println("Please, enter number from the menu!");
+                    System.out.println("Please, enter the number from the menu!");
             }
         }
     }
@@ -52,17 +45,16 @@ public class Main {
     private static void createFiles() {
         Utils.createFileFolder();
 
-        TaskFile file = new TaskFile();
+        var taskFile = new TaskFile();
         for (var i = 0; i < numberOfFiles; i++) {
-            file.createFile(i + 1);
+            taskFile.createFile(i + 1);
             System.out.print("\rCreating files: " + (int) percentOfProcessedFiles(i + 1) + "%");
         }
     }
 
     private static void combineFiles() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter character combination you want to delete (if no, just press 'enter'): ");
-        var charCombination = scanner.nextLine();
+        var charCombination = new Scanner(System.in).nextLine();
         if (charCombination.isEmpty()) {
             combineFilesWithoutRemoving();
         } else {
@@ -73,7 +65,7 @@ public class Main {
     private static void combineFilesWithRemoving(String charCombination) {
         FileWriter newFile = null;
         try {
-            newFile = new FileWriter(filesFolderPath + File.separator + "combined.txt", true);
+            newFile = new FileWriter(filesFolderPathWithSeparator + fullFileName, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,7 +74,7 @@ public class Main {
         BufferedReader bufferedReader;
 
         for (var i = 1; i <= numberOfFiles; i++) {
-            var fileName = filesFolderPath + File.separator + i + ".txt";
+            var fileName = filesFolderPathWithSeparator + i + fileExtension;
             try {
                 bufferedReader = new BufferedReader(new FileReader(fileName));
                 while ((newLine = bufferedReader.readLine()) != null) {
@@ -101,23 +93,21 @@ public class Main {
                 e.printStackTrace();
             }
         }
-
         System.out.println("\nThe number of deleted lines is " + numberOfDeletedStrings);
     }
 
     private static void combineFilesWithoutRemoving() {
         FileChannel sourceChannel, destinationChannel = null;
-        var writeFileName = filesFolderPath + File.separator + "combined.txt";
+        var writeFileName = filesFolderPathWithSeparator + fullFileName;
         try {
             destinationChannel = new FileOutputStream(writeFileName).getChannel();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        long position = 0;
-        long size;
+        long position = 0, size;
 
         for (var i = 1; i <= numberOfFiles; i++) {
-            var readFileName = filesFolderPath + File.separator + i + ".txt";
+            var readFileName = filesFolderPathWithSeparator + i + fileExtension;
             try {
                 sourceChannel = new FileInputStream(readFileName).getChannel();
                 size = sourceChannel.size();
@@ -141,14 +131,14 @@ public class Main {
 
     private static void insertToDB() {
         long stringsImported = 0;
-        TaskString taskString = new TaskString();
+        var taskString = new TaskString();
 
-        File folder = new File(filesFolderPath);
+        var folder = new File(filesFolderPathWithSeparator);
         BufferedReader bufferedReader = null;
 
         if (folder.length() > 1) {
             for (var i = 1; i <= numberOfFiles; i++) {
-                var fileName = filesFolderPath + File.separator + i + ".txt";
+                var fileName = filesFolderPathWithSeparator + i + fileExtension;
                 try {
                     bufferedReader = new BufferedReader(new FileReader(fileName));
                 } catch (FileNotFoundException e) {
@@ -183,7 +173,14 @@ public class Main {
     }
 
     private static boolean deleteFile(String fileName) {
-        File file = new File(fileName);
-        return file.delete();
+        return new File(fileName).delete();
+    }
+
+    private static void printMenu() {
+        System.out.println("\n\nProgram operations:");
+        System.out.println("1. Create 100 files");
+        System.out.println("2. Combine all files into 1");
+        System.out.println("3. Import to database management system");
+        System.out.println("0. Exit");
     }
 }
