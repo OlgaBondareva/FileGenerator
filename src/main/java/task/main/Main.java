@@ -34,12 +34,20 @@ public class Main {
                 case 3:
                     insertToDB();
                     break;
+                case 4:
+                    getSumAndMedian();
+                    break;
                 case 0:
                     return;
                 default:
                     System.out.println("Please, enter the number from the menu!");
             }
         }
+    }
+
+    private static void getSumAndMedian() {
+        System.out.println("\nSum of integer numbers: " + taskStringDB.getSum());
+        System.out.println("Median of real numbers: " + taskStringDB.getMedian());
     }
 
     private static void createFiles() {
@@ -181,6 +189,7 @@ public class Main {
         System.out.println("1. Create 100 files");
         System.out.println("2. Combine all files into 1");
         System.out.println("3. Import to database management system");
+        System.out.println("4. Get sum of integer numbers and median of real numbers");
         System.out.println("0. Exit");
     }
 }
